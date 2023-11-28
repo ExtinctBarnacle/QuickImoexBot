@@ -11,10 +11,41 @@ import java.util.Date;
 //@NoArgsConstructor
 //@Component
 public class StockModel {
-    Integer cur_ID;
-    Date date;
-    String cur_Abbreviation;
-    Integer cur_Scale;
-    String cur_Name;
-    Double cur_OfficialRate;
+    int stockNumber;
+    String stockName;
+    String stockTicker;
+    double stockPrice;
+
+    public int getStockNumber() {
+        return stockNumber;
+    }
+
+    public void setStockNumber(int stockNumber) {
+        this.stockNumber = stockNumber;
+    }
+
+    public String getStockName() {
+        return stockName;
+    }
+
+    public void setStockName(String stockName) {
+        this.stockName = stockName;
+    }
+
+    public String getStockTicker() {
+        return stockTicker;
+    }
+
+    public void setStockTicker(String stockTicker) {
+        this.stockTicker = stockTicker;
+    }
+
+    public double getStockPrice() {
+        return stockPrice;
+    }
+
+    public void setStockPrice(double stockPrice) {
+        this.stockPrice = stockPrice;
+    }
+//Double cur_OfficialRate;
 }

@@ -47,10 +47,11 @@ public class TelegramBot extends TelegramLongPollingBot {
                         stock = StockService.getStockRate (messageText, stockModel);
 
                     } catch (IOException e) {
-                        sendMessage(chatId, "We have not found such a stock." + "\n" +
-                                "Enter the stock whose current price" + "\n" +
-                                "you want to know" + "\n" +
-                                "For example: LKOH");
+
+                        sendMessage(chatId, e.getMessage() );//+ ". We have not found such a stock." + "\n" +
+                                //"Enter the stock whose current price" + "\n" +
+                                //"you want to know" + "\n" +
+                                //"For example: LKOH");
                     } catch (ParseException e) {
                         throw new RuntimeException("Unable to parse date");
                     }
