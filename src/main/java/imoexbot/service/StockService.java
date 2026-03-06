@@ -18,6 +18,9 @@ import java.util.Scanner;
 //@Service
 public class StockService {
     public static String getStockRate(String message, StockModel model) throws IOException, ParseException {
+        
+        String stockNameToCompare = "";
+        
         //URL url = new URL("https://smart-lab.ru/q/shares/"); // + message + "?parammode=2");
         Document document = Jsoup.connect("https://smart-lab.ru/q/shares/").userAgent("Chrome/4.0.249.0 Safari/532.5")
                 .referrer("http://www.google.com").get();
@@ -46,7 +49,14 @@ public class StockService {
                 System.out.println(curStock.getStockName());
                 System.out.println(curStock.getStockTicker());
                 System.out.println(curStock.getStockPrice());
-                if (curStock.getStockName().equals(message) || curStock.getStockTicker().equals(message)){
+                
+                stockNameToCompare = curStock.getStockName();
+                if (stockNameToCompare == null)
+                {
+                    continue;
+                }
+                
+                if (stockNameToCompare.equals(message) || curStock.getStockTicker().equals(message)){
                     foundStock = curStock;
                 }
                 boolean infoGotFromSite = true;
