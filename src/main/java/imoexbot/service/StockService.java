@@ -12,44 +12,50 @@ import java.text.ParseException;
 public class StockService { 
 
     public String getStockRate(String message, StockModel model) throws IOException, ParseException {
+        final String STOCK_NUMBER_PATTERN = "[0-9]{1,3}";
+        final int STOCK_NUMBER = 0;
+        final String STOCK_TICKER_PATTERN = "[A-Za-z]{4,5}";
+
         DataLoader dataLoader;
         String stockNameToCompare = "";
         dataLoader = new DataLoader();
         Elements tags = dataLoader.getPageContent("https://smart-lab.ru/q/shares/");
         StockModel foundStock = new StockModel();
         for (Element tag : tags){
-            StockModel curStock = new StockModel();
+            StockModel currentStock = new StockModel();
             String stockParams[] = tag.text().split(" ");
-            if (stockParams[0].matches("[0-9]{1,3}")){
-                for (int i = 0; i < stockParams.length; i++){
-                    if (stockParams[i].matches("[A-Za-z]{4,5}")){
-                        curStock.setStockTicker(stockParams[i]);
+            if (stockParams[STOCK_NUMBER].matches(STOCK_NUMBER_PATTERN)){
+                // why second loop?
+                for (int i = STOCK_NUMBER; i < stockParams.length; i++){
+                    if (stockParams[i].matches(STOCK_TICKER_PATTERN)){
+                        currentStock.setStockTicker(stockParams[i]);
                         try {
-                            curStock.setStockPrice(Double.valueOf(stockParams[i + 1]));
+                            currentStock.setStockPrice(Double.valueOf(stockParams[i + 1]));
                         }
                         catch (NumberFormatException e){
-                            curStock.setStockPrice(-9999);
+                            currentStock.setStockPrice(-9999);
                         }
-                        curStock.setStockName("");
-                        for (int j=1;j<i;j++){
-                            curStock.setStockName(curStock.getStockName()+stockParams[j]);
+                        currentStock.setStockName("");
+                        // why 3rd loop?
+                        for (int j = 1; j < i; j++){
+                            currentStock.setStockName(currentStock.getStockName() + stockParams[j]);
                         }
                     }
                 }
                 
-                stockNameToCompare = curStock.getStockName();
+                stockNameToCompare = currentStock.getStockName();
                 if (stockNameToCompare == null)
                 {
                     continue;
                 }
                 
-                if (stockNameToCompare.equals(message) || curStock.getStockTicker().equals(message)){
-                    foundStock = curStock;
+                if (stockNameToCompare.equals(message) || currentStock.getStockTicker().equals(message)){
+                    foundStock = currentStock;
                 }
                 boolean infoGotFromSite = true;
                 Document wikidoc = new Document("");
                 try {
-                    wikidoc = Jsoup.connect("https://ru.wikipedia.org/wiki/" + curStock.getStockName()).userAgent("Chrome/4.0.249.0 Safari/532.5")
+                    wikidoc = Jsoup.connect("https://ru.wikipedia.org/wiki/" + currentStock.getStockName()).userAgent("Chrome/4.0.249.0 Safari/532.5")
                         .referrer("http://www.google.com").get();}
                 catch (IOException e){
                     System.out.println(e.getMessage());
