@@ -1,6 +1,7 @@
 package imoexbot.service;
 
 import imoexbot.config.BotConfig;
+import imoexbot.model.StockModel;
 import lombok.AllArgsConstructor;
 //import imoexbot.model.StockModel;
 import org.springframework.stereotype.Component;
@@ -31,8 +32,10 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
-        //StockModel stockModel = new StockModel();
+        StockModel stockModel = new StockModel();
         String stock = "";
+        StockService stockService = null;
+        stockService = new StockService();
 
         if(update.hasMessage() && update.getMessage().hasText()){
             String messageText = update.getMessage().getText();
@@ -44,7 +47,7 @@ public class TelegramBot extends TelegramLongPollingBot {
                     break;
                 default:
                     try {
-                        stock = DataLoader.getPageContent (messageText);
+                        stock = stockService.getStockRate(messageText, stockModel);
 
                     } catch (Exception e) {
 

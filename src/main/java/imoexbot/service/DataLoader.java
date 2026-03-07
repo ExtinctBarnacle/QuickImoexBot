@@ -4,28 +4,39 @@ import java.io.IOException;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
 
 // Загрузка данных с сайта Смартлаб
-public class DataLoader {
+public class DataLoader
+{
     
-    public static Document getPageContent(String telegramMessage){
-        try{
-        Document hTMLDocument = getPageText("https://smart-lab.ru/q/shares/");
+    public Elements getPageContent(String address)
+    {
+        Document hTMLDocument = null;
+        try
+        {
+            hTMLDocument = getPageText(address);
         }
-        catch(IOException e){
+        catch(IOException e)
+        {
             System.out.println("Webpage loading error: " + e.getMessage());
         }
-        return pageText;
+
+        Elements tags = parseHTMLDocument(hTMLDocument, "tr");
+
+        //lock-in
+        return tags;
     }
 
-    private static Document getPageText(String address) throws IOException
+    private Document getPageText(String address) throws IOException
     {
-        //URL url = new URL("https://smart-lab.ru/q/shares/"); // + message + "?parammode=2");
         return Jsoup.connect(address).userAgent("Chrome/4.0.249.0 Safari/532.5")
                 .referrer("http://www.google.com").get();
     }
 
-    private static parseHTMLDocument(Document hTMLDocument){
-        
+    private Elements parseHTMLDocument(Document hTMLDocument, String tagToSearch)
+    {
+        return hTMLDocument.select(tagToSearch);
+
     }
 }

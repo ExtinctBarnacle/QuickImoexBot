@@ -1,37 +1,27 @@
 package imoexbot.service;
 
 import imoexbot.model.StockModel;
-//import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-//import org.springframework.stereotype.Service;
-
 import java.io.IOException;
-//import java.io.InputStream;
-//import java.net.URL;
 import java.text.ParseException;
-// import java.text.SimpleDateFormat;
-// import java.util.Scanner;
 
 //@Service
-public class StockService {
-    public static String getStockRate(String message, StockModel model) throws IOException, ParseException {
-        
+public class StockService { 
+
+    public String getStockRate(String message, StockModel model) throws IOException, ParseException {
+        DataLoader dataLoader;
         String stockNameToCompare = "";
-        
-        //URL url = new URL("https://smart-lab.ru/q/shares/"); // + message + "?parammode=2");
-        Document document = Jsoup.connect("https://smart-lab.ru/q/shares/").userAgent("Chrome/4.0.249.0 Safari/532.5")
-                .referrer("http://www.google.com").get();
-        Elements tags = document.select("tr");
+        dataLoader = new DataLoader();
+        Elements tags = dataLoader.getPageContent("https://smart-lab.ru/q/shares/");
         StockModel foundStock = new StockModel();
         for (Element tag : tags){
-            System.out.println(tag.text());
             StockModel curStock = new StockModel();
             String stockParams[] = tag.text().split(" ");
             if (stockParams[0].matches("[0-9]{1,3}")){
-                for (int i=0;i<stockParams.length;i++){
+                for (int i = 0; i < stockParams.length; i++){
                     if (stockParams[i].matches("[A-Za-z]{4,5}")){
                         curStock.setStockTicker(stockParams[i]);
                         try {
@@ -46,9 +36,6 @@ public class StockService {
                         }
                     }
                 }
-                System.out.println(curStock.getStockName());
-                System.out.println(curStock.getStockTicker());
-                System.out.println(curStock.getStockPrice());
                 
                 stockNameToCompare = curStock.getStockName();
                 if (stockNameToCompare == null)
