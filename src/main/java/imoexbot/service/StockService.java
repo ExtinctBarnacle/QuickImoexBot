@@ -1,19 +1,19 @@
 package imoexbot.service;
 
 import imoexbot.model.StockModel;
-import org.json.JSONObject;
+//import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.springframework.stereotype.Service;
+//import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
+//import java.io.InputStream;
+//import java.net.URL;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Scanner;
+// import java.text.SimpleDateFormat;
+// import java.util.Scanner;
 
 //@Service
 public class StockService {
@@ -102,7 +102,7 @@ public class StockService {
 
     }
 
-    private static String getFormatDate(StockModel model) {
-        return ""; // new SimpleDateFormat("dd MM yyyy").format(model.getDate());
-    }
+    // private static String getFormatDate(StockModel model) {
+    //     return ""; // new SimpleDateFormat("dd MM yyyy").format(model.getDate());
+    // }
 }

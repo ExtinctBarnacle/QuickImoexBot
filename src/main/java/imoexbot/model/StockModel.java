@@ -1,10 +1,10 @@
 package imoexbot.model;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.springframework.stereotype.Component;
+//import lombok.NoArgsConstructor;
+//import org.springframework.stereotype.Component;
 
-import java.util.Date;
+//import java.util.Date;
 
 @Data
 //@Entity (name = "index_s")
