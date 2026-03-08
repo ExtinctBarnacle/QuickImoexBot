@@ -32,7 +32,7 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
-        StockModel stockModel = new StockModel();
+       // StockModel stockModel = new StockModel();
         String stock = "";
         StockService stockService = null;
         stockService = new StockService();
@@ -47,7 +47,7 @@ public class TelegramBot extends TelegramLongPollingBot {
                     break;
                 default:
                     try {
-                        stock = stockService.getStockRate(messageText, stockModel);
+                        stockService.getStockData();
 
                     } catch (Exception e) {
 
