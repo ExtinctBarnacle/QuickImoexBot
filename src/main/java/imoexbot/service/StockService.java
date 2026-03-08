@@ -20,29 +20,36 @@ public class StockService
     {
         final int STOCK_NUMBER = 0;
         final int STOCK_TICKER = 2;
-        //HashMap<String, StockModel> stockModels;
+        HashMap<String, StockModel> stockModels;
         DataLoader dataLoader;
 
        // String stockNameToCompare = "";
         dataLoader = new DataLoader();
-        Elements tags = dataLoader.getPageContent("https://smart-lab.ru/q/shares/");
+    Elements tags = dataLoader.getPageContent("https://smart-lab.ru/q/shares/");
        // StockModel foundStock = new StockModel();
-        for (Element tag : tags)
+    StockModel currentStock = null;
+       for (Element tag : tags)
         {
-        //
-        // 
+        System.out.println(tag.text());
             String stockParams[] = tag.text().split(" ");
-            if (isValidStockNumber(stockParams[STOCK_NUMBER]) && isValidStockTicker(stockParams[STOCK_TICKER]))
+            if (isValidStockNumber(stockParams[STOCK_NUMBER]) )
             {
-                StockModel currentStock = new StockModel();
-                currentStock.setStockNumber(Integer.parseInt(stockParams[STOCK_NUMBER]));
-                currentStock.setStockName(stockParams[1]);
-                currentStock.setStockTicker(stockParams[STOCK_TICKER]);
-                //System.out.println(tag.text());
-                for (int i = STOCK_NUMBER; i < stockParams.length; i++)
-                {
+                String stockNameSuggested = "";
+                for (int i = STOCK_NUMBER + 1; i < stockParams.length; i++)
+                { 
                     
+                    if (isValidStockTicker(stockParams[i]))
+                    {
+                        currentStock = new StockModel();
+                        currentStock.setStockTicker(stockParams[STOCK_TICKER]);
+                        currentStock.setStockName(stockNameSuggested);
+                        break;
+                    }
+                    stockNameSuggested = stockNameSuggested.concat(stockParams[i]);
                 }
+                
+                currentStock.setStockNumber(Integer.parseInt(stockParams[STOCK_NUMBER]));
+                
             }
         }
     }
@@ -55,7 +62,7 @@ public class StockService
 
      public boolean isValidStockTicker(String ticker)
     {
-        final String STOCK_TICKER_PATTERN = "[A-Za-z]{4,5}";
+        final String STOCK_TICKER_PATTERN = "[A-Za-z]{1,5}";
         return ticker.matches(STOCK_TICKER_PATTERN);
     }
                
