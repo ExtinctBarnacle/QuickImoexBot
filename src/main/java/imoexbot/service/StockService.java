@@ -30,27 +30,31 @@ public class StockService
     StockModel currentStock = null;
        for (Element tag : tags)
         {
-        System.out.println(tag.text());
+        
             String stockParams[] = tag.text().split(" ");
-            if (isValidStockNumber(stockParams[STOCK_NUMBER]) )
-            {
+
+            // TODO строка с заголовками стобцов - начинается с №?
+            if (stockParams[STOCK_NUMBER] == "№"){System.out.println(tag.text());}
+
+            if (!isValidStockNumber(stockParams[STOCK_NUMBER]) ) continue;
                 String stockNameSuggested = "";
+                currentStock = new StockModel();
                 for (int i = STOCK_NUMBER + 1; i < stockParams.length; i++)
                 { 
-                    
                     if (isValidStockTicker(stockParams[i]))
                     {
-                        currentStock = new StockModel();
                         currentStock.setStockTicker(stockParams[STOCK_TICKER]);
                         currentStock.setStockName(stockNameSuggested);
-                        break;
+                        continue;
                     }
-                    stockNameSuggested = stockNameSuggested.concat(stockParams[i]);
+                    if (currentStock.getStockName() == null)
+                        stockNameSuggested = stockNameSuggested.concat(stockParams[i]);
+
+                    //TODO add other stock params
                 }
                 
                 currentStock.setStockNumber(Integer.parseInt(stockParams[STOCK_NUMBER]));
                 
-            }
         }
     }
 
